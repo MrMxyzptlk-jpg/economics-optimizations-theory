@@ -23,8 +23,8 @@ h1, h2 {
 }
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 1800px;
+    margin: 0 0 auto;
     display: flex;
     grid-template-columns: 350px 1fr;
     gap: 30px;
@@ -40,12 +40,11 @@ h1, h2 {
     box-shadow: var(--card-shadow);
 }
 
-#graph {
-    width: 100%;
-    height: 200px;
-    background: #fafafa;
-    border-radius: 8px;
-    margin-bottom: 20px;
+.plots-container{
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    min-width: 0;
 }
 
 .controls {
@@ -87,16 +86,19 @@ input[type="range"] {
     gap: 8px;
 }
 
-#plot {
+#plot,
+#plot3d{
+    flex: 1 1 0;
+    min-width: 0;
+
     background: white;
     border-radius: 12px;
     border: 1px solid var(--border-color);
     box-shadow: var(--card-shadow);
     padding: 10px;
-    width: 100%;
-    min-width: 0;
-    overflow: hidden;
+    aspect-ratio: square
 }
+
 
 .hint {
     text-align: center;
@@ -237,9 +239,14 @@ input[type="range"] {
         font-size: 0.95rem;
     }
 
-    #plot {
+    .plots-container{
+        flex-direction: column;
+    }
+
+    #plot,
+    #plot3d{
         width: 100%;
-        height: 320px;
+        height: 450px;
     }
 }
 

@@ -18,14 +18,11 @@ function getValues() {
 }
 function optimalBundle(A, alpha, beta, C, w, r) {
 
-    const L =
-        (alpha/(alpha+beta))*C/w;
+    const L = (alpha/(alpha+beta))*C/w;
 
-    const K =
-        (beta/(alpha+beta))*C/r;
+    const K = (beta/(alpha+beta))*C/r;
 
-    const Q =
-        A*Math.pow(L,alpha)*Math.pow(K,beta);
+    const Q = A*Math.pow(L,alpha)*Math.pow(K,beta);
 
     return {L,K,Q};
 }
@@ -84,10 +81,7 @@ function updatePlot() {
 
     updateResults(opt);
 
-    const xmax = Math.max(
-        1.2*C/w,
-        1.2*opt.L
-    );
+    const xmax = 50;
 
     const x = [];
 
@@ -101,18 +95,11 @@ function updatePlot() {
 
         x.push(L);
 
-        costY.push(
-            (C-w*L)/r
-        );
+        costY.push( (C-w*L)/r );
 
         if(L>0){
 
-            const K =
-                Math.pow(
-                    opt.Q/
-                    (A*Math.pow(L,alpha)),
-                    1/beta
-                );
+            const K = Math.pow( opt.Q/ (A*Math.pow(L,alpha)), 1/beta );
 
             isoY.push(K);
         }
@@ -121,24 +108,29 @@ function updatePlot() {
         }
     }
 
+    const globalLmax = 50;
+    const globalKmax = 50;
     Plotly.react(
         "plot",
         [
             {
                 x:x,
                 y:costY,
-                name:"Isocosto"
+                name:"Isocosto", 
+                marker: { color: 'green' }
             },
             {
                 x:x,
                 y:isoY,
-                name:"Isocuanta óptima"
+                name:"Isocuanta óptima", 
+                marker: { color: 'orange' }
             },
             {
                 x:[opt.L],
                 y:[opt.K],
                 mode:"markers",
-                name:"Óptimo"
+                name:"Óptimo",
+                marker: { color: 'red' }
             }
         ],
         {
@@ -146,20 +138,238 @@ function updatePlot() {
                 "Optimización de la Producción",
 
             xaxis:{
-                title:"Trabajo (L)"
+                title:"Trabajo (L)",
+                range: [0, globalLmax],
+                autorange: false
             },
 
             yaxis:{
-                title:"Capital (K)"
+                title:"Capital (K)",
+                range: [0, globalKmax],
+                autorange: false
             },
 
-            margin:{
-                t:50
+            margin:{ t:50 }
+        },
+
+        { responsive:true }
+    );
+    
+    /* ==========================
+       3D SURFACE
+       ========================== */
+
+    const n = 40;
+
+    const Lmax = 50;
+    const Kmax = 50;
+
+    const Lgrid = [];
+    const Kgrid = [];
+
+    for(let i = 0; i < n; i++){
+        Lgrid.push(i * Lmax / (n - 1));
+        Kgrid.push(i * Kmax / (n - 1));
+    }
+
+    const Z = [];
+
+    for(let j = 0; j < n; j++){
+
+        const row = [];
+
+        for(let i = 0; i < n; i++){
+
+            const L = Lgrid[i];
+            const K = Kgrid[j];
+
+            row.push( A * Math.pow(L, alpha) * Math.pow(K, beta) );
+        }
+
+        Z.push(row);
+    }
+
+    /* ==========================
+       CONSTRAINT CURVE
+       ========================== */
+
+    const curveL = [];
+    const curveK = [];
+    const curveQ = [];
+
+    for(let i = 0; i < 150; i++){
+
+        const L = (i / 149) * C / w;
+
+        const K = (C - w * L) / r;
+
+        if(K >= 0){
+
+            const Q = A * Math.pow(L, alpha) * Math.pow(K, beta);
+
+            curveL.push(L);
+            curveK.push(K);
+            curveQ.push(Q);
+        }
+    }
+
+    /* ==========================
+       CONSTRAINT PLANE
+       ========================== */
+
+    const planeX = [];
+    const planeY = [];
+    const planeZ = [];
+
+    const zMax = Math.max(...curveQ) * 1.2;
+
+    for(let j = 0; j < 2; j++){
+
+        const z =
+            j * zMax;
+
+        const rowX = [];
+        const rowY = [];
+        const rowZ = [];
+
+        for(let i = 0; i < n; i++){
+
+            const L =
+                Lgrid[i];
+
+            const K = (C - w * L) / r;
+
+            rowX.push(L);
+            rowY.push(K);
+            rowZ.push(z);
+        }
+
+        planeX.push(rowX);
+        planeY.push(rowY);
+        planeZ.push(rowZ);
+    }
+
+    /* ==========================
+       TRACES
+       ========================== */
+
+    const surfaceTrace = {
+
+        type: "surface",
+
+        x: Lgrid,
+        y: Kgrid,
+        z: Z,
+
+        opacity: 0.85,
+
+        name: "Producción",
+
+        showscale: false
+    };
+
+    const planeTrace = {
+
+        type: "surface",
+
+        x: planeX,
+        y: planeY,
+        z: planeZ,
+
+        opacity: 0.35,
+
+        showscale: false,
+
+        name: "Restricción"
+    };
+
+    const curveTrace = {
+
+        type: "scatter3d",
+
+        mode: "lines",
+
+        x: curveL,
+        y: curveK,
+        z: curveQ,
+
+        line: {
+            width: 6
+        },
+
+        name: "Factible"
+    };
+
+    const optimumTrace = {
+
+        type: "scatter3d",
+
+        mode: "markers",
+
+        x: [opt.L],
+        y: [opt.K],
+        z: [opt.Q],
+
+        marker: {
+            size: 6,
+            color: "red"
+        },
+
+        name: "Óptimo"
+    };
+
+    const globalQmax = 100;
+    Plotly.react(
+        "plot3d",
+        [
+            surfaceTrace,
+            planeTrace,
+            curveTrace,
+            optimumTrace
+        ],
+        {
+            title:
+                "Superficie de Producción y Restricción",
+
+            scene: {
+
+                xaxis: {
+                    title: "Trabajo (L)",
+                    range: [0, globalLmax],
+                    autorange: false
+                },
+
+                yaxis: {
+                    title: "Capital (K)",
+                    range: [0, globalKmax],
+                    autorange: false
+                },
+
+                zaxis: {
+                    title: "Producción (Q)",
+                    range: [0, globalQmax],
+                    autorange: false
+                },
+                
+                aspectmode: "cube",
+     
+                camera: {
+                    center: { x: 0, y: 0, z: 0 },
+                    eye: { x: -1.5, y: -1.5, z: 0.91 },
+                    up: { x: 0, y: 0, z: 1 }
+                }
+            },
+
+            margin: {
+                l: 0,
+                r: 0,
+                t: 50,
+                b: 0
             }
         },
 
         {
-            responsive:true
+            responsive: true
         }
     );
 }
