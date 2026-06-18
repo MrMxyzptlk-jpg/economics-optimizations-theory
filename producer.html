@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimización de Funciones de 2 Variables</title>
+    <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<header class="site-header">
+    <nav class="nav">
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="consumer.html" class="active">Optimización</a></li>
+        </ul>
+    </nav>
+</header>
+
+<body>
+
+<h2>Optimización de la Producción</h2>
+<p class="hint">Optimización de un Modelo Simple Interactivo de una Función de Dos Variables</p>
+
+<details class="assignment-box">
+    <summary>Planteo del problema</summary>
+
+    <div class="assignment-content">
+    <p>El objetivo es determinar la combinación de trabajo y capital que maximiza la producción.</p>
+
+    <p> Una empresa produce un bien utilizando dos factores productivos: el trabajo (<b>L</b>) y el capital (<b>K</b>). En economía, una función de producción describe la cantidad máxima de producto que puede obtenerse a partir de una determinada combinación de factores. </p>
+
+    <p> En este ejemplo utilizaremos una función de producción del tipo Cobb-Douglas: </p>
+
+    \[ Q(L,K)=A\,L^\alpha K^\beta \]
+
+    <p>donde:</p>
+        <ul>
+            <li><b>Q</b>: producción total.</li>
+            <li><b>A</b>: parámetro tecnológico.</li>
+            <li><b>L</b>: cantidad de trabajo utilizada.</li>
+            <li><b>K</b>: cantidad de capital utilizada.</li>
+            <li><b>\(\alpha\)</b> y <b>\(\beta\)</b>: parámetros que miden la importancia relativa de cada factor productivo.</li>
+        </ul>
+    
+    <p> La empresa dispone de un presupuesto fijo \(C\) para contratar trabajo y capital. Si el costo de una unidad de trabajo es \(w\) y el costo de una unidad de capital es \(r\), entonces debe cumplirse: </p>
+
+    \[ wL+rK=C \]
+
+    <p> Esta ecuación recibe el nombre de <b>restricción presupuestaria</b> o <b>recta de isocosto</b>, ya que representa todas las combinaciones posibles de trabajo y capital que la empresa puede pagar. </p>
+
+    <p> El objetivo es determinar qué combinación de trabajo y capital permite obtener la máxima producción sin superar el presupuesto disponible. </p>
+    </div>
+</details>
+
+<details class="assignment-box">
+    <summary>Desarrollo matemático</summary>
+
+    <div class="assignment-content">
+        <p> Nos encontramos frente a un problema de optimización condicionada: queremos maximizar la función de producción respetando la restricción presupuestaria. </p>
+
+        <p> Para ello utilizamos el método de los multiplicadores de Lagrange. Definimos la función: </p>
+
+        \[ \mathcal{L} = A L^\alpha K^\beta + \lambda(C-wL-rK) \]
+
+        <p> donde \(\lambda\) es el multiplicador de Lagrange. </p>
+
+        <p> Las condiciones necesarias para un extremo se obtienen derivando respecto de cada variable: </p>
+
+        \[ \frac{\partial\mathcal{L}}{\partial L} = A\alpha L^{\alpha-1}K^\beta - \lambda w = 0 \]
+        \[ \frac{\partial\mathcal{L}}{\partial K} = A\beta L^\alpha K^{\beta-1} - \lambda r = 0 \]
+        \[ \frac{\partial\mathcal{L}}{\partial \lambda} = C-wL-rK = 0 \]
+
+        <p> Dividiendo las dos primeras ecuaciones obtenemos: </p>
+
+        \[ \frac{\alpha}{\beta} \frac{K}{L} = \frac{w}{r} \]
+
+        <p> Esta expresión indica que, en el punto óptimo, la relación entre los productos marginales de los factores debe coincidir con la relación entre sus costos. </p>
+
+        <p> Resolviendo el sistema se obtiene: </p>
+
+        \[ L_{opt} = \frac{\alpha}{\alpha+\beta} \frac{C}{w} \]
+        \[ K_{opt} = \frac{\beta}{\alpha+\beta} \frac{C}{r} \]
+
+        <p> Estas expresiones permiten calcular directamente la combinación óptima de factores para cualquier conjunto de parámetros. </p>
+    </div>
+</details>
+
+<details class="assignment-box">
+    <summary>Interpretación económica</summary>
+
+    <div class="assignment-content">
+        <p> En el gráfico se representan dos curvas fundamentales: </p>
+
+        <ul>
+            <li> <b>Isocosto:</b> muestra todas las combinaciones de trabajo y capital que tienen exactamente el mismo costo. </li>
+            <li> <b>Isocuanta:</b> muestra todas las combinaciones de factores que producen la misma cantidad de producto. </li>
+        </ul>
+        
+        <p> El punto óptimo corresponde al punto de tangencia entre la isocuanta y la recta de isocosto. </p> <p> En ese punto la empresa alcanza la mayor producción posible utilizando exactamente el presupuesto disponible. </p>
+
+        <p> Utilice los controles para modificar los parámetros del modelo y observar cómo cambia la solución óptima: </p>
+
+        <ul>
+            <li>Si aumenta \(C\), la empresa puede contratar más factores y producir más.</li>
+            <li>Si aumenta \(w\), el trabajo se vuelve más costoso y la empresa utiliza relativamente menos trabajo.</li>
+            <li>Si aumenta \(r\), el capital se vuelve más costoso y la empresa utiliza relativamente menos capital.</li>
+            <li>Si aumenta \(\alpha\), el trabajo se vuelve más importante dentro del proceso productivo.</li>
+            <li>Si aumenta \(\beta\), el capital adquiere mayor importancia relativa.</li>
+            <li>Si aumenta \(A\), mejora la productividad general de la empresa.</li>
+        </ul>
+
+        <p> Observe cómo el punto óptimo se desplaza cuando modifica los parámetros y compare los cambios en \(L_{opt}\), \(K_{opt}\) y \(Q_{opt}\). </p>
+    </div>
+
+</details>
+
+
+
+<div class="container">
+
+    <div class="left-panel">
+        <div class="controls">
+            <label>A = <span id="AVal">0.9</span>
+                <input  type="range" id="A" min="0.5" max="5" step="0.1" value="0.9">
+            </label>
+
+            <label>α = <span id="alphaVal">0.1</span>
+                <input type="range" id="alpha" min="0.1" max="0.9" step="0.05" value="0.1">
+            </label>
+
+            <label>β = <span id="betaVal">0.9</span>
+                <input type="range" id="beta" min="0.1" max="0.9" step="0.05" value="0.9">
+            </label>
+
+            <label>C = <span id="budgetVal">10</span>
+                <input type="range" id="budget" min="10" max="200" step="5" value="10">
+            </label>
+
+            <label>w = <span id="wageVal">1</span>
+                <input type="range" id="wage" min="0.5" max="10" step="0.1" value="1">
+            </label>
+
+            <label>r = <span id="rentVal">1</span>
+                <input type="range" id="rent" min="0.5" max="10" step="0.1" value="1">
+            </label>        
+        </div>
+        
+        <div class="results-box">
+            <h3>Resultado Óptimo</h3>
+            <p>L<sub>opt</sub> = <span id="Lstar"></span></p>
+            <p>K<sub>opt</sub> = <span id="Kstar"></span></p>
+            <p>Q<sub>opt</sub> = <span id="Qstar"></span></p>
+        </div>
+    </div>
+
+    <div id="plot"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type="module" src="js/producer.js"></script>
+
+</body>
+</html>

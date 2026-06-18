@@ -1,0 +1,247 @@
+:root {
+    --primary-blue: #0047AB;
+    --accent-blue: #0074D9;
+    --bg-light: #f8f9fa;
+    --text-main: #333;
+    --text-muted: #666;
+    --border-color: #d1d5db;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fdfdfd;
+    color: var(--text-main);
+    line-height: 1.6;
+    margin: 0;
+    padding-bottom: 50px;
+}
+
+h1, h2 {
+    color: var(--primary-blue);
+    text-align: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    grid-template-columns: 350px 1fr;
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.left-panel {
+    max-width: 350px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--card-shadow);
+}
+
+#graph {
+    width: 100%;
+    height: 200px;
+    background: #fafafa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;background: var(--bg-light);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.controls span{
+    font-variant-numeric: tabular-nums;
+    display: inline-block;
+    min-width: 3.5em;
+}
+
+input[type="range"] {
+    flex: 1;
+    min-width: 50px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.left-label, .right-label {
+    font-size: 0.75rem;
+    color: #888;
+    min-width: 15px;
+    text-align: center;
+}
+
+.controls input[type="number"] {
+    width: 70px;
+    margin-left: 8px;
+}
+
+.controls label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#plot {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--card-shadow);
+    padding: 10px;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.hint {
+    text-align: center;
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+/* ========================
+   Layout
+======================== */
+.site-header {
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+.nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.5rem 2rem;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+    color: var(--accent-blue);
+}
+
+.nav a {
+    text-decoration: none;
+    color: var(--text-muted);
+}
+
+.nav a.active {
+    font-weight: bold;
+    border-bottom: 2px solid var(--text-muted);
+}
+
+.site-footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* ========================
+    Problem Details
+======================== */
+.assignment-box {
+    margin: 20px 0;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background: #f4f6fa;
+    border: 1px solid #d0d6e2;
+}
+
+.assignment-box summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.1rem;
+    outline: none;
+}
+
+.assignment-box[open] {
+    background: #eef2ff;
+}
+
+.assignment-content {
+    margin-top: 10px;
+    line-height: 1.5;
+}
+
+.intermediate-step{
+    font-weight: normal;
+}
+
+/* ========================
+   Results/Notes
+======================== */
+.results-box {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.results-box h3 {
+    margin-top: 0;
+    color: var(--primary-blue);
+}
+
+.results-box p {
+    margin: 6px 0;
+    font-variant-numeric: tabular-nums;
+}
+.interpretation-box {
+    margin-top: 20px;
+    padding: 15px;
+    border-left: 4px solid var(--accent-blue);
+    background: #f7fbff;
+}
+
+
+/* ========================
+   Responsive
+======================== */
+@media (max-width: 768px) {
+
+    body {
+        margin: 15px;
+    }
+
+    .container {
+        flex-direction: column;
+        grid-template-columns:1fr;
+        max-width: 760px;
+        gap: 30px;
+    }
+
+    .left-panel {
+        max-width: 97%;
+        width: 100%;
+    }
+
+    #graph {
+        width: 100%;
+        height: 180px;
+    }
+
+    .controls label {
+        font-size: 0.95rem;
+    }
+
+    #plot {
+        width: 100%;
+        height: 320px;
+    }
+}
+
+
+
