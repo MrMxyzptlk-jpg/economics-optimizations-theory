@@ -1,4 +1,14 @@
-const controls = {
+const cfg = window.modelConfig ?? {
+    xLabel: "Trabajo",
+    yLabel: "Capital",
+    zLabel: "Producción",
+    budgetLabel: "Isocosto",
+    isoLabel: "Isocuanta",
+    optimumLabel: "Óptimo",
+    plotTitle: "Optimización de la Producción",
+    plot3dTitle: "Superficie de Producción y Restricción"
+}
+;const controls = {
     A: document.getElementById("A"),
     alpha: document.getElementById("alpha"),
     beta: document.getElementById("beta"),
@@ -116,13 +126,13 @@ function updatePlot() {
             {
                 x:x,
                 y:costY,
-                name:"Isocosto", 
+                name: cfg.budgetLabel, 
                 marker: { color: 'green' }
             },
             {
                 x:x,
                 y:isoY,
-                name:"Isocuanta óptima", 
+                name: cfg.isoLabel, 
                 marker: { color: 'orange' }
             },
             {
@@ -134,17 +144,16 @@ function updatePlot() {
             }
         ],
         {
-            title:
-                "Optimización de la Producción",
+            title: cfg.plotTitle,
 
             xaxis:{
-                title:"Trabajo (L)",
+                title: cfg.xLabel,
                 range: [0, globalLmax],
                 autorange: false
             },
 
             yaxis:{
-                title:"Capital (K)",
+                title: cfg.yLabel,
                 range: [0, globalKmax],
                 autorange: false
             },
@@ -328,25 +337,24 @@ function updatePlot() {
             optimumTrace
         ],
         {
-            title:
-                "Superficie de Producción y Restricción",
+            title: cfg.plot3dTitle,
 
             scene: {
 
                 xaxis: {
-                    title: "Trabajo (L)",
+                    title: cfg.xLabel,
                     range: [0, globalLmax],
                     autorange: false
                 },
 
                 yaxis: {
-                    title: "Capital (K)",
+                    title: cfg.yLabel,
                     range: [0, globalKmax],
                     autorange: false
                 },
 
                 zaxis: {
-                    title: "Producción (Q)",
+                    title: cfg.zLabel,
                     range: [0, globalQmax],
                     autorange: false
                 },

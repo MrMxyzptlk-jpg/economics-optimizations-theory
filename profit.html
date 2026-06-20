@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimización de Funciones de 2 Variables</title>
+    <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<header class="site-header">
+    <nav class="nav">
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="producer.html">Producción</a></li>
+            <li><a href="consumer.html">Utilidad</a></li>
+            <li><a href="profit.html" class="active">Beneficio</a></li>
+        </ul>
+    </nav>
+</header>
+
+<body>
+
+<h2>Optimización del Beneficio Económico</h2>
+<p class="hint">Optimización de un Modelo Simple Interactivo de una Función de Dos Variables</p>
+
+<details class="assignment-box">
+    <summary>Planteo del problema</summary>
+
+    <div class="assignment-content">
+
+    <p>El objetivo es determinar la combinación de trabajo y capital que maximiza el beneficio económico de una empresa. Consideramos una empresa que produce un bien utilizando trabajo (\(L\)) y capital (\(K\)) como en la sección de <a href="producer.html">producción</a>. Dicha producción (\(Q\)) viene dada por una función Cobb-Douglas:</p>
+
+    \[Q(L,K)=A\,L^\alpha K^\beta\]
+
+    <p>Si el precio de venta del producto es \(P\), los ingresos totales son:</p>
+
+    \[IT(L,K)=P \cdot\,Q(L,K)\]
+
+    <p>Los costos de producción dependen del costo del trabajo y del capital:</p>
+
+    \[CT(L,K)=wL+rK\]
+
+    <p>Consideremos el beneficio económico:</p>
+
+    \[\Pi(L,K)=IT(L,K)-CT(L,K)\]
+
+    \[\Pi(L,K)=P\,A\,L^\alpha K^\beta-wL-rK\]
+
+    <p>Buscamos determinar la combinación de factores productivos que maximiza el beneficio.</p>
+
+    </div>
+</details>
+
+<details class="assignment-box">
+    <summary>Desarrollo matemático</summary>
+
+    <div class="assignment-content">
+
+    <p>A diferencia de los ejemplos anteriores, aquí no existe una restricción explícita.    El beneficio depende directamente de las cantidades de trabajo y capital elegidas por la empresa. Por lo tanto, buscamos los puntos críticos resolviendo:</p>
+
+    \[\frac{\partial \Pi}{\partial L}=0\]
+
+    \[\frac{\partial \Pi}{\partial K}=0\]
+
+    <p>Calculando las derivadas:</p>
+
+    \[\frac{\partial \Pi}{\partial L}=PA\alpha L^{\alpha-1}K^\beta-w=0\]
+
+    \[\frac{\partial \Pi}{\partial K}=PA\beta L^\alpha K^{\beta-1}-r=0\]
+
+    <p>Estas ecuaciones pueden escribirse como:</p>
+
+    \[ P \cdot \,QMg = w \]
+
+    \[ P \cdot \, QMg = r \]
+
+    <p>Es decir, la empresa contrata cada factor hasta que el valor de su producto marginal coincide con su costo.</p>
+
+    <p>Dividiendo ambas ecuaciones obtenemos:</p>
+
+    \[\frac{\alpha}{\beta}\frac{K}{L}=\frac{w}{r}\]
+
+    <p>Esta condición determina la proporción óptima entre trabajo y capital.</p>
+
+    <details>
+        <summary>Sustituyendo esta relación en el sistema se obtiene:</summary>
+
+        <p>En la primera condición de primer orden:</p>
+
+        \[ PA\alpha L^{\alpha-1} \left( \frac{\beta w}{\alpha r}L \right)^\beta = w \]
+
+        \[ PA\alpha \left( \frac{\beta w}{\alpha r} \right)^\beta L^{\alpha+\beta-1} = w \]
+
+        <p>Despejando la potencia de \(L\):</p>
+
+        \[ L^{\alpha+\beta-1} = \frac{w} {PA\alpha \left( \frac{\beta w}{\alpha r} \right)^\beta} \]
+
+        \[ L^{\alpha+\beta-1} = \frac {w^{1-\beta}r^\beta} {PA\,\alpha^{1-\beta}\beta^\beta} \]
+
+        <p>Finalmente:</p>
+
+        \[ L_{opt} = \left[ \frac {w^{1-\beta}r^\beta} {PA\,\alpha^{1-\beta}\beta^\beta} \right]^{\frac{1}{\alpha+\beta-1}} \]
+
+        <p>Utilizando la relación obtenida anteriormente:</p>
+
+        \[ K_{opt} = \frac{\beta w}{\alpha r} L_{opt} \]
+
+    </details>
+
+    \[L_{opt}=\left[\frac{w^{1-\beta}r^\beta}{PA\,\alpha^{1-\beta}\beta^\beta}\right]^{\frac{1}{\alpha+\beta-1}}\]
+
+    \[K_{opt}=\frac{\beta w}{\alpha r}L_{opt}\]
+
+    <p>Para verificar que el punto crítico corresponde a un máximo analizamos el Hessiano de la función beneficio:</p>
+
+    \[ H = \begin{pmatrix}
+        \dfrac{\partial^2\Pi}{\partial L^2} & \dfrac{\partial^2\Pi}{\partial L\partial K}\\
+        \dfrac{\partial^2\Pi}{\partial K\partial L} & \dfrac{\partial^2\Pi}{\partial K^2}
+    \end{pmatrix}\]
+
+    <p>Calculamos las derivadas parciales de segundo orden:</p>
+
+    \[\frac{\partial^2\Pi}{\partial L^2}=PA\alpha(\alpha-1)L^{\alpha-2}K^\beta\]
+
+    \[\frac{\partial^2\Pi}{\partial K^2}=PA\beta(\beta-1)L^\alpha K^{\beta-2}\]
+
+
+    \[\frac{\partial^2\Pi}{\partial L\partial K}=PA\alpha\beta L^{\alpha-1}K^{\beta-1}\]
+    <p>Reemplazamos en el determinante:</p>
+
+    \[|H|=\frac{\partial^2\Pi}{\partial L^2}\frac{\partial^2\Pi}{\partial K^2}-\left(\frac{\partial^2\Pi}{\partial L\partial K}\right)^2\]
+        
+    \[|H|=(PA)^2L^{2\alpha-2}K^{2\beta-2}\alpha\beta\left(1-\alpha-\beta\right)\]
+
+    <p>Para el caso \(\alpha+\beta<1,\) ya que todas las variables/constantes son positivas, se verifica que:</p>
+
+    \[\frac{\partial^2\Pi}{\partial L^2}<0 \quad , \quad \frac{\partial^2\Pi}{\partial K^2}<0 \]
+
+    \[|H| > 0\]
+
+    <p>Por el criterio de la segunda derivada, el Hessiano es definido negativo y el punto crítico corresponde a un máximo local.</p>
+
+    </div>
+</details>
+
+<details class="assignment-box">
+    <summary>Interpretación económica</summary>
+
+    <div class="assignment-content">
+
+    <p>En esta aplicación se representan simultáneamente los ingresos, los costos y el beneficio de la empresa. El punto óptimo corresponde a la combinación de factores que genera el mayor beneficio posible.</p>
+
+    <p>Las decisiones de la empresa cambian al modificar los parámetros:</p>
+
+    <ul>
+
+        <li>Si aumenta \(P\), la producción se vuelve más rentable y la empresa utiliza más factores.    </li>
+
+        <li>Si aumenta \(A\), mejora la productividad y aumenta el beneficio.</li>
+
+        <li>Si aumenta \(w\), contratar trabajo resulta más costoso y la empresa reduce su utilización.</li>
+
+        <li>Si aumenta \(r\), el capital se vuelve más costoso y la empresa reduce su utilización.</li>
+
+        <li>Si aumenta \(\alpha\), el trabajo adquiere mayor importancia dentro del proceso productivo.</li>
+
+        <li>Si aumenta \(\beta\), el capital adquiere mayor importancia relativa.</li>
+
+    </ul>
+
+    <p>A diferencia de los problemas de producción y consumo, aquí la empresa no busca simplemente producir más, sino obtener el mayor beneficio económico posible.</p>
+
+    </div>
+</details>
+
+<div class="container">
+
+    <div class="left-panel">
+        <div class="controls">
+        <p>α + β = <span id="returnsVal"></span> < 1</p>
+        
+        <label>A = <span id="AVal">2</span>
+            <input type="range" id="A" min="0.5" max="5" step="0.1" value="2">
+        </label>
+
+        <label>α = <span id="alphaVal">0.2</span>
+            <input type="range" id="alpha" min="0.05" max="0.9" step="0.05" value="0.2">
+        </label>
+
+        <label>β = <span id="betaVal">0.2</span>
+            <input type="range" id="beta" min="0.05" max="0.9" step="0.05" value="0.2">
+        </label>
+
+        <label>P = <span id="priceVal">5</span>
+            <input type="range" id="price" min="0.5" max="5" step="0.1" value="5">
+        </label>
+
+        <label>w = <span id="wageVal">1</span>
+            <input type="range" id="wage" min="0.5" max="10" step="0.1" value="1">
+        </label>
+
+        <label>r = <span id="rentVal">1</span>
+            <input type="range" id="rent" min="0.5" max="10" step="0.1" value="1">
+        </label>
+    
+        </div>
+
+        <div class="results-box">
+            <h3>Resultado Óptimo</h3>
+            <p>L<sub>opt</sub> = <span id="Lstar"></span></p>
+            <p>K<sub>opt</sub> = <span id="Kstar"></span></p>
+            <p>Π<sub>opt</sub> = <span id="Qstar"></span></p>
+        </div> 
+    </div> 
+
+    <div class="plots-container">
+        <div id="plot"></div>
+        <div id="plot3d"></div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+window.modelConfig = {
+    xLabel: "Trabajo (L)",
+    yLabel: "Capital (K)",
+    zLabel: "Beneficio (Π)",
+    optimumLabel: "Óptimo",
+    plotTitle: "Curva de Isobeneficio",
+    plot3dTitle: "Superficie de Beneficio"
+};
+</script>
+<script type="module" src="js/profit.js"></script>
+
+</body>
+</html>

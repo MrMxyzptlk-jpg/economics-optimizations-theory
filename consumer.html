@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimización de Funciones de 2 Variables</title>
+    <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<header class="site-header">
+    <nav class="nav">
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="producer.html">Producción</a></li>
+            <li><a href="consumer.html" class="active">Utilidad</a></li>
+            <li><a href="profit.html">Beneficio</a></li>
+        </ul>
+    </nav>
+</header>
+
+<body>
+
+<h2>Optimización de la Utilidad</h2>
+<p class="hint">Optimización de un Modelo Simple Interactivo de una Función de Dos Variables</p>
+
+<details class="assignment-box">
+    <summary>Planteo del problema</summary>
+
+    <div class="assignment-content">
+
+    <p>El objetivo es determinar la combinación de bienes que maximiza la utilidad de un consumidor.</p>
+
+    <p> Consideremos un consumidor que puede adquirir dos bienes: el bien \(x\) y el bien \(y\). Sus preferencias se representan mediante una función de utilidad de tipo Cobb-Douglas:</p>
+
+    \[ U(x,y)=A\,x^\alpha y^\beta \]
+
+    <p>donde:</p>
+
+    <ul>
+        <li><b>U</b>: nivel de utilidad o satisfacción.</li>
+        <li><b>A</b>: parámetro de escala.</li>
+        <li><b>x</b>: cantidad consumida del bien \(x\).</li>
+        <li><b>y</b>: cantidad consumida del bien \(y\).</li>
+        <li><b>\(\alpha\)</b> y <b>\(\beta\)</b>: parámetros que reflejan la importancia relativa de cada bien.</li>
+    </ul>
+
+    <p>El consumidor dispone de un ingreso fijo \(M\). Si los precios de los bienes son \(p_x\) y \(p_y\), entonces debe cumplirse:</p>
+
+    \[ p_xx+p_yy=M \]
+
+    <p> Esta ecuación recibe el nombre de <b>restricción presupuestaria</b>, ya que representa todas las combinaciones de bienes que el consumidor puede comprar.</p>
+
+    <p> El objetivo consiste en encontrar la combinación de bienes que proporciona la máxima utilidad sin superar el ingreso disponible.</p>
+
+    </div>
+</details>
+
+<details class="assignment-box">
+    <summary>Desarrollo matemático</summary>
+
+    <div class="assignment-content">
+
+    <p> Nos encontramos frente a un problema de optimización condicionada: queremos maximizar la utilidad respetando la restricción presupuestaria. Esta resolución es análoga al caso de la maximización de la producción, y los pasos intermedios pueden verse en la sección de <a href="producer.html">producción</a>.</p>
+
+    <p>Utilizamos el método de los multiplicadores de Lagrange:</p>
+
+    \[ \mathcal L = A x^\alpha y^\beta - \lambda(p_xx+p_yy-M) \]
+
+    <p>donde \(\lambda\) es el multiplicador de Lagrange.</p>
+
+    <p>Las condiciones necesarias para un extremo son:</p>
+
+    \[ \frac{\partial \mathcal L}{\partial x}=A\alpha x^{\alpha-1}y^\beta-\lambda p_x=0 \]
+
+    \[ \frac{\partial \mathcal L}{\partial y}=A\beta x^\alpha y^{\beta-1}-\lambda p_y=0 \]
+
+    \[ \frac{\partial \mathcal L}{\partial \lambda}=-p_xx-p_yy+M=0 \]
+
+    <p>Dividiendo las dos primeras ecuaciones obtenemos:</p>
+
+    \[ \frac{\alpha}{\beta}\frac{y}{x}=\frac{p_x}{p_y} \]
+
+    <p>Esta condición indica que, en el óptimo, la relación entre las utilidades marginales coincide con la relación entre los precios.</p>
+
+    <p>Resolviendo el sistema se obtiene:</p>
+
+    \[ x_{crit}=\frac{\alpha}{\alpha+\beta}\frac{M}{p_x} \]
+
+    \[ y_{crit}=\frac{\beta}{\alpha+\beta}\frac{M}{p_y} \]
+
+    <p>Para verificar que el punto crítico corresponde a un máximo condicionado, utilizamos el Hessiano Orlado asociado a la restricción:</p>
+
+    \[ g(x,y)=p_xx+p_yy-M=0 \]
+
+    \[ H_B=\begin{pmatrix}0 & \frac{\partial g}{\partial x} & \frac{\partial g}{\partial y}\\\frac{\partial g}{\partial x}&\frac{\partial^2\mathcal L}{\partial x^2}&\frac{\partial^2\mathcal L}{\partial x\partial y}\\\frac{\partial g}{\partial y}&\frac{\partial^2\mathcal L}{\partial y\partial x}&\frac{\partial^2\mathcal L}{\partial y^2}\end{pmatrix} \]
+
+    <p>El determinante resulta:</p>
+
+    \[ |H_B| = A x^{\alpha-2}y^{\beta-2} \Big[p_x^2\beta(1-\beta)x^2 + p_y^2\alpha(1-\alpha)y^2 + 2p_xp_y\alpha\beta xy \Big] \]
+
+    <p>Dado que</p>
+
+    \[ A>0,\qquad x>0,\qquad y>0,\qquad\alpha>0,\qquad\beta>0, \]
+
+    <p>se cumple:</p>
+
+    \[ |H_B|>0 \]
+
+    <p>Por lo tanto, el punto estacionario hallado mediante el método de Lagrange corresponde a un máximo condicionado.</p>
+
+    \[ x_{opt}=\frac{\alpha}{\alpha+\beta}\frac{M}{p_x} \]
+
+    \[ y_{opt}=\frac{\beta}{\alpha+\beta}\frac{M}{p_y} \]
+
+    </div>
+</details>
+
+<details class="assignment-box">
+    <summary>Interpretación económica</summary>
+
+    <div class="assignment-content">
+
+    <p>En el gráfico se representan dos curvas fundamentales:</p>
+
+    <ul>
+        <li><b>Restricción presupuestaria:</b> muestra todas las combinaciones de bienes que el consumidor puede comprar con su ingreso.    </li>
+
+        <li><b>Curva de indiferencia:</b> muestra todas las combinaciones de bienes que proporcionan el mismo nivel de utilidad.</li>
+    </ul>
+
+    <p>El punto óptimo corresponde al punto de tangencia entre la curva de indiferencia y la restricción presupuestaria.</p>
+
+    <p>En dicho punto el consumidor alcanza el máximo nivel de utilidad posible utilizando exactamente su ingreso disponible.</p>
+
+    <p>Utilice los controles para modificar los parámetros del modelo y observar cómo cambia la solución óptima.</p>
+
+    <ul>
+
+        <li>Si aumenta \(M\), el consumidor puede adquirir mayores cantidades de ambos bienes.</li>
+
+        <li>Si aumenta \(p_x\), el bien \(x\) se vuelve relativamente más caro y el consumidor compra menos cantidad de dicho bien.</li>
+
+        <li>Si aumenta \(p_y\), el bien \(y\) se vuelve relativamente más caro y el consumidor compra menos cantidad de dicho bien.</li>
+
+        <li>Si aumenta \(\alpha\), el consumidor asigna una mayor proporción de su ingreso al bien \(x\).</li>
+
+        <li>Si aumenta \(\beta\), el consumidor asigna una mayor proporción de su ingreso al bien \(y\).</li>
+
+        <li>Si aumenta \(A\), la escala de la utilidad cambia, aunque la combinación óptima de consumo permanece inalterada.</li>
+
+    </ul>
+
+    <p>Observe cómo se desplaza el punto óptimo al modificar los parámetros y compare los cambios en \(x_{opt}\), \(y_{opt}\) y \(U_{opt}\).</p>
+
+    </div>
+</details>
+
+
+<div class="container">
+
+    <div class="left-panel">
+        <div class="controls">
+            <label>A = <span id="AVal">2</span>
+                <input  type="range" id="A" min="0.5" max="5" step="0.1" value="2">
+            </label>
+
+            <label>α = <span id="alphaVal">0.5</span>
+                <input type="range" id="alpha" min="0.1" max="0.9" step="0.05" value="0.5">
+            </label>
+
+            <label>β = <span id="betaVal">0.5</span>
+                <input type="range" id="beta" min="0.1" max="0.9" step="0.05" value="0.5">
+            </label>
+
+            <label>M = <span id="budgetVal">40</span>
+                <input type="range" id="budget" min="10" max="50" step="5" value="40">
+            </label>
+
+            <label><p>p<sub>x</sub></p> = <span id="wageVal">1</span>
+                <input type="range" id="wage" min="0.5" max="10" step="0.1" value="1">
+            </label>
+
+            <label><p>p<sub>y</sub></p> = <span id="rentVal">1</span>
+                <input type="range" id="rent" min="0.5" max="10" step="0.1" value="1">
+            </label>        
+        </div>
+        
+        <div class="results-box">
+            <h3>Resultado Óptimo</h3>
+            <p>x<sub>opt</sub> = <span id="Lstar"></span></p>
+            <p>y<sub>opt</sub> = <span id="Kstar"></span></p>
+            <p>U<sub>opt</sub> = <span id="Qstar"></span></p>
+        </div>
+    </div>
+
+    <div class="plots-container">
+        <div id="plot"></div>
+        <div id="plot3d"></div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+window.modelConfig = {
+    xLabel: "Bien x",
+    yLabel: "Bien y",
+    zLabel: "Utilidad",
+    budgetLabel: "Restricción Presupuestaria",
+    isoLabel: "Curva de Indiferencia",
+    plotTitle: "Optimización del Consumidor",
+    plot3dTitle: "Superficie de Utilidad y Restricción Presupuestaria"
+};
+</script>
+<script type="module" src="js/producer.js"></script>
+
+</body>
+</html>

@@ -18,7 +18,9 @@
     <nav class="nav">
         <ul class="nav-links">
             <li><a href="index.html">Inicio</a></li>
-            <li><a href="consumer.html" class="active">Optimización</a></li>
+            <li><a href="producer.html" class="active">Producción</a></li>
+            <li><a href="consumer.html">Utilidad</a></li>
+            <li><a href="profit.html">Beneficio</a></li>
         </ul>
     </nav>
 </header>
@@ -46,7 +48,7 @@
             <li><b>A</b>: parámetro tecnológico.</li>
             <li><b>L</b>: cantidad de trabajo utilizada.</li>
             <li><b>K</b>: cantidad de capital utilizada.</li>
-            <li><b>\(\alpha\)</b> y <b>\(\beta\)</b>: parámetros que miden la importancia relativa de cada factor productivo.</li>
+            <li><b>\(\alpha\)</b> y <b>\(\beta\)</b>: parámetros (\(0 < \alpha , \beta < 1\) ) que miden la importancia relativa de cada factor productivo.</li>
         </ul>
     
     <p> La empresa dispone de un presupuesto fijo \(C\) para contratar trabajo y capital. Si el costo de una unidad de trabajo es \(w\) y el costo de una unidad de capital es \(r\), entonces debe cumplirse: </p>
@@ -67,7 +69,7 @@
 
         <p> Para ello utilizamos el método de los multiplicadores de Lagrange. Definimos la función: </p>
 
-        \[ \mathcal{L} = A L^\alpha K^\beta + \lambda(C-wL-rK) \]
+        \[ \mathcal{L} = A L^\alpha K^\beta - \lambda(wL + rK -C) \]
 
         <p> donde \(\lambda\) es el multiplicador de Lagrange. </p>
 
@@ -75,7 +77,7 @@
 
         \[ \frac{\partial\mathcal{L}}{\partial L} = A\alpha L^{\alpha-1}K^\beta - \lambda w = 0 \]
         \[ \frac{\partial\mathcal{L}}{\partial K} = A\beta L^\alpha K^{\beta-1} - \lambda r = 0 \]
-        \[ \frac{\partial\mathcal{L}}{\partial \lambda} = C-wL-rK = 0 \]
+        \[ \frac{\partial\mathcal{L}}{\partial \lambda} = -wL - rK + C = 0 \]
 
         <p> Dividiendo las dos primeras ecuaciones obtenemos: </p>
 
@@ -85,11 +87,75 @@
 
         <p> Resolviendo el sistema se obtiene: </p>
 
+        \[ L_{crit} = \frac{\alpha}{\alpha+\beta} \frac{C}{w} \]
+        \[ K_{crit} = \frac{\beta}{\alpha+\beta} \frac{C}{r} \]
+
+        <p>Para verificar que el punto crítico obtenido corresponde efectivamente a un máximo bajo la restricción presupuestaria, utilizamos las condiciones de segundo orden para problemas de optimización condicionada. En este caso resulta necesario construir el <b>Hessiano Orlado</b> (o bordered Hessian). </p>
+
+        <p>La restricción puede escribirse como:</p>
+
+        \[ g(L,K)=wL + rK - C =0 \]
+
+        <p>Y el Hessiano Orlado asociado a la función de Lagrange es:</p>
+
+        \[ H_B= \begin{pmatrix} 
+                0 & \frac{\partial{g}}{\partial L} & \frac{\partial{g}}{\partial K} \\ 
+                \frac{\partial{g}}{\partial L} & \frac{\partial^2\mathcal{L}}{\partial^2 L} & \frac{\partial^2\mathcal{L}}{\partial L \partial K} \\ 
+                \frac{\partial{g}}{\partial K} & \frac{\partial^2\mathcal{L}}{\partial K \partial L} & \frac{\partial^2\mathcal{L}}{\partial^2 K} \\
+        \end{pmatrix}\]
+
+
+        <details>
+            <summary>Calculando las derivadas resulta:</summary>
+
+            \[ \frac{\partial{g}}{\partial L} = w, \qquad \frac{\partial{g}}{\partial L} = r, \]
+
+            \[ \frac{\partial^2\mathcal{L}}{\partial^2 L} = A\alpha(\alpha-1)L^{\alpha-2}K^\beta, \]
+
+            \[ \frac{\partial^2\mathcal{L}}{\partial^2 K} = A\beta(\beta-1)L^\alpha K^{\beta-2}, \]
+
+            \[ \frac{\partial^2\mathcal{L}}{\partial K \partial L} = A\alpha\beta L^{\alpha-1}K^{\beta-1}, \]
+
+            <details>
+                <summary>Reemplazando en el Hessiano Orlando y desarrollando el determinante: </summary>
+
+
+                    \[ \begin{align}
+                        |H_B| = & \begin{vmatrix} 
+                            0 & \frac{\partial{g}}{\partial L} & \frac{\partial{g}}{\partial K} \\ 
+                            \frac{\partial{g}}{\partial L} & \frac{\partial^2\mathcal{L}}{\partial^2 L} & \frac{\partial^2\mathcal{L}}{\partial L \partial K} \\ 
+                            \frac{\partial{g}}{\partial K} & \frac{\partial^2\mathcal{L}}{\partial K \partial L} & \frac{\partial^2\mathcal{L}}{\partial^2 K} \\
+                        \end{vmatrix}
+                        \\
+                        = & - \frac{\partial{g}}{\partial L} \Big( \frac{\partial{g}}{\partial L} \frac{\partial^2\mathcal{L}}{\partial^2 K} -  \frac{\partial{g}}{\partial K} \frac{\partial^2\mathcal{L}}{\partial L \partial K}  \Big)
+                        \\
+                        & + \frac{\partial{g}}{\partial K} \Big( \frac{\partial{g}}{\partial L} \frac{\partial^2\mathcal{L}}{\partial K \partial L} -  \frac{\partial{g}}{\partial K}  \frac{\partial^2\mathcal{L}}{\partial^2 K} \Big)
+                        \\
+                        = & - \frac{\partial^2{g}}{\partial^2 L}\frac{\partial^2\mathcal{L}}{\partial^2 K} -  \frac{\partial^2{g}}{\partial^2 K}\frac{\partial^2\mathcal{L}}{\partial^2 K} + \frac{\partial^2{g}}{\partial K \partial L}\frac{\partial^2\mathcal{L}}{\partial K \partial L}
+                        \\
+                        = & -w^2\frac{\partial^2\mathcal{L}}{\partial^2 K} - r^2\frac{\partial^2\mathcal{L}}{\partial^2 L}+ 2wr\frac{\partial^2\mathcal{L}}{\partial K \partial L}
+                        \\
+                        & = A L^{\alpha-2}K^{\beta-2} \Big[ -w^2\beta(\beta-1)L^2 -r^2\alpha(\alpha-1)K^2 +2wr\alpha\beta LK \Big]
+                        \end{align} \]
+            </details>
+
+        </details>
+
+        \[ |H_B| = A L^{\alpha-2}K^{\beta-2} \Big[ w^2\beta(1-\beta)L^2 +r^2\alpha(1-\alpha)K^2 +2wr\alpha\beta LK \Big] \]
+
+        <p>Dado que:</p>
+
+        \[ A>0, \qquad L>0, \qquad K>0, \qquad \alpha>0, \qquad \beta>0, \]
+
+        <p>se concluye que: </p>
+
+        \[ |H_B| > 0 \]
+
+        <p> Para un problema con una restricción de igualdad y dos variables de decisión, esta condición garantiza que el punto estacionario hallado mediante el método de los multiplicadores de Lagrange corresponde a un <b>máximo condicionado</b>. Por lo tanto, las expresiones obtenidas para \(L_{opt}\) y \(K_{opt}\) representan la combinación de factores que maximiza la producción respetando la restricción presupuestaria:</p>
+
         \[ L_{opt} = \frac{\alpha}{\alpha+\beta} \frac{C}{w} \]
         \[ K_{opt} = \frac{\beta}{\alpha+\beta} \frac{C}{r} \]
-
-        <p> Estas expresiones permiten calcular directamente la combinación óptima de factores para cualquier conjunto de parámetros. </p>
-    </div>
+     </div>
 </details>
 
 <details class="assignment-box">
@@ -169,6 +235,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
 <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+window.modelConfig = {
+    xLabel: "Trabajo (L)",
+    yLabel: "Capital (K)",
+    zLabel: "Producción (Q)",
+    budgetLabel: "Isocosto",
+    isoLabel: "Isocuanta",
+    plotTitle: "Optimización de la Producción",
+    plot3dTitle: "Superficie de Producción y Restricción"
+};
+</script>
 <script type="module" src="js/producer.js"></script>
 
 </body>
